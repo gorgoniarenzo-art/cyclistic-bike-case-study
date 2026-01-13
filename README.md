@@ -1,4 +1,4 @@
-**Case Study: Cyclistic Bike-Share Analysis**
+**CASE STUDY OF CYCLISTIC BIKE-SHARE ANALYSIS**
 
 **Introduction**
 
@@ -45,21 +45,25 @@ Creating New Columns: I used the TIMESTAMP_DIFF function to calculate ride_lengt
 
 ```sql
 
--- Standardizing data and creating time-based features
-CREATE TABLE `cyclistic_cs.2025_full_year_cleaned` AS
+CREATE TABLE `case-study-2025-483513.cyclistic_cs.2025_full_year_cleaned` AS
 SELECT 
-  *,
-  -- Calculate ride length in minutes
+--Standardizing data and creating time-based features
+  FORMAT_TIMESTAMP('%Y-%m-%d %H:%M:%S', started_at) AS started_at,
+  FORMAT_TIMESTAMP('%Y-%m-%d %H:%M:%S', ended_at) AS ended_at,
+--Calculating ride length in minutes by getting the timestamp difference
   TIMESTAMP_DIFF(ended_at, started_at, MINUTE) AS ride_length_mins,
-  -- Extract day and month for seasonality analysis
+--Extracting day and month for seasonality analysis
   EXTRACT(DAYOFWEEK FROM started_at) AS day_of_week_num,
   FORMAT_DATE('%A', started_at) AS day_of_week_name,
+  EXTRACT(MONTH FROM started_at) AS month_num,
   FORMAT_DATE('%B', DATE(started_at)) AS month_name
-FROM `cyclistic_cs.2025_full_year`
--- Filter out trip errors and outliers
-WHERE TIMESTAMP_DIFF(ended_at, started_at, MINUTE) > 0 
-  AND TIMESTAMP_DIFF(ended_at, started_at, MINUTE) < 1440
-  AND member_casual IS NOT NULL;
+FROM `case-study-2025-483513.cyclistic_cs.2025_full_year`
+--Filtering out trip errors and outliers
+WHERE TIMESTAMP_DIFF(ended_at, started_at, MINUTE) > 0 AND
+  TIMESTAMP_DIFF(ended_at, started_at, MINUTE) < 1440
+  AND member_casual IS NOT NULL
+  AND member_casual != ' '
+ORDER BY ride_length_mins DESC;
 
 ```
 
