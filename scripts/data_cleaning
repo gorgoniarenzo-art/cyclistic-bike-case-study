@@ -1,4 +1,4 @@
-***Data Consolidation***
+DATA CONSOLIDATION
 To perform a year-wide analysis, I consolidated 12 individual monthly datasets (CSV files) into a single master table (2025_full_year)
 using UNION ALL. This allows for a holistic view of seasonal trends across the entire year.
 
@@ -17,7 +17,7 @@ UNION ALL SELECT * FROM `cyclistic_cs.2025_oct_data`
 UNION ALL SELECT * FROM `cyclistic_cs.2025_nov_data`
 UNION ALL SELECT * FROM `cyclistic_cs.2025_dec_data`;
   
-***Data Cleaning and Transformation***
+DATA CLEANING AND TRANSFORMATION
 Data cleaning was performed to ensure accuracy and create new variables for analysis:
   
 Creating Calculated Columns: Created ride_length_mins, day_of_week, and month columns to enable time-series and categorical analysis.
