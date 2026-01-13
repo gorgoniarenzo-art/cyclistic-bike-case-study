@@ -1,0 +1,22 @@
+Data Analysis
+Data analysis was performed to identify the behavioral differences between casual riders and annual members.
+I ran a summary query to calculate the total number of rides and the average trip duration for every day of the week.
+
+I aggregated the data to compare two key metrics:
+Ride Frequency: How many trips are taken?
+Ride Duration: How long does a typical trip last?
+
+By grouping the results by user type and the day of the week, I can identify specific patterns—such as which group
+uses the bikes for commuting (consistent, short trips) versus leisure (longer, weekend trips).
+
+-- Querying frequency and duration by user type and day
+SELECT  
+  member_casual,
+  day_of_week_num,
+  COUNT(*) AS num_of_rides,
+  ROUND(AVG(ride_length_mins)) AS avg_ride_duration
+FROM `case-study-2025-483513.cyclistic_cs.2025_full_year_cleaned` 
+GROUP BY
+  member_casual, day_of_week_num
+ORDER BY
+  member_casual, day_of_week_num;
