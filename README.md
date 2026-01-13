@@ -3,6 +3,8 @@
 **Introduction**
 This repository contains my analysis for the Google Data Analytics Professional Certificate Capstone Project. The goal is to provide data-driven recommendations to help the Cyclistic marketing team convert casual riders into annual members.
 
+
+
 **Project Overview**
 Cyclistic is a fictional bike-share program in Chicago. The marketing director believes that maximizing the number of annual members is the key to future growth. My task is to analyze how casual riders and annual members use Cyclistic bikes differently.
 
@@ -44,11 +46,9 @@ Seasonal Patterns: There is a massive spike in casual rider usage during the sum
 
 5. Share
 
-[View my Tableau Public Viz](Tableau Link)
+[View my Tableau Public Viz](https://public.tableau.com/app/profile/arrenz.gorgonia/viz/CyclisticCaseStudy_17683116030960/DataViz?publish=yes)
 
-Caption: Comparison of average ride length between Members and Casual riders.
-
-7. Act
+6. Act
 
 Top 3 Recommendations:
 
