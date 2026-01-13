@@ -1,28 +1,33 @@
 **Case Study: Cyclistic Bike-Share Analysis**
 
 **Introduction**
+
 This repository contains my analysis for the Google Data Analytics Professional Certificate Capstone Project. The goal is to provide data-driven recommendations to help the Cyclistic marketing team convert casual riders into annual members.
 
 ![Cyclistic Analysis Dashboard](Data_Viz_Cyclistic.png)
 
 **Project Overview**
+
 Cyclistic is a fictional bike-share program in Chicago. The marketing director believes that maximizing the number of annual members is the key to future growth. My task is to analyze how casual riders and annual members use Cyclistic bikes differently.
 
 **Tools Used**
+
 Data Cleaning: SQL BigQuery
 Analysis: SQL BigQuery
 Visualization: Tableau
 Documentation: GitHub
 
-Data Source: [Link to the Divvy Dataset Here](https://divvy-tripdata.s3.amazonaws.com/index.html)
+**Data Source**
+
+[Link to the Divvy Dataset Here](https://divvy-tripdata.s3.amazonaws.com/index.html)
 
 **The Data Analysis Process**
 
 1. Ask
 
-Business Task: Analyze 12 months of historical trip data to identify trends in how casual riders and members use bikes differently.
+Business Task: Analyze how annual members and casual riders use Cyclistic bikes differently in order to identify insights that can help convert casual riders into annual members.
 
-Key Stakeholders: Lily Moreno (Director of Marketing), Cyclistic Executive Team.
+Key Stakeholders: Director of Marketing, Marketing Analytics Team, Cyclistic Executives.
 
 2. Prepare
 
@@ -35,6 +40,28 @@ Data has been verified for integrity (checked for missing values, duplicates, an
 Major Cleaning Step: I combined 12 individual monthly datasets into a single year-long table using UNION ALL. I then filtered out "false starts" by removing any trips with a duration of less than or equal to zero and trips greater than 24 hours to ensure the data was not skewed by technical errors or unreturned bikes.
 
 Creating New Columns: I used the TIMESTAMP_DIFF function to calculate ride_length_mins. To enable time-based analysis, I utilized EXTRACT and FORMAT_DATE functions to create day_of_week and month columns, allowing me to compare usage patterns across different timeframes.
+
+***Sample Cleaning and Transformation Query***
+
+```sql
+
+-- Standardizing data and creating time-based features
+CREATE TABLE `cyclistic_cs.2025_full_year_cleaned` AS
+SELECT 
+  *,
+  -- Calculate ride length in minutes
+  TIMESTAMP_DIFF(ended_at, started_at, MINUTE) AS ride_length_mins,
+  -- Extract day and month for seasonality analysis
+  EXTRACT(DAYOFWEEK FROM started_at) AS day_of_week_num,
+  FORMAT_DATE('%A', started_at) AS day_of_week_name,
+  FORMAT_DATE('%B', DATE(started_at)) AS month_name
+FROM `cyclistic_cs.2025_full_year`
+-- Filter out trip errors and outliers
+WHERE TIMESTAMP_DIFF(ended_at, started_at, MINUTE) > 0 
+  AND TIMESTAMP_DIFF(ended_at, started_at, MINUTE) < 1440
+  AND member_casual IS NOT NULL;
+
+```
 
 4. Analyze
 
