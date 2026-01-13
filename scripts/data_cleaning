@@ -1,0 +1,47 @@
+Data Consolidation
+To perform a year-wide analysis, I consolidated 12 individual monthly datasets (CSV files) into a single master table (2025_full_year)
+using UNION ALL. This allows for a holistic view of seasonal trends across the entire year.
+
+CREATE TABLE `cyclistic_cs.2025_full_year` AS
+SELECT * 
+FROM `cyclistic_cs.2025_jan_data`
+UNION ALL SELECT * FROM `cyclistic_cs.2025_feb_data`
+UNION ALL SELECT * FROM `cyclistic_cs.2025_mar_data`
+UNION ALL SELECT * FROM `cyclistic_cs.2025_apr_data`
+UNION ALL SELECT * FROM `cyclistic_cs.2025_may_data`
+UNION ALL SELECT * FROM `cyclistic_cs.2025_jun_data`
+UNION ALL SELECT * FROM `cyclistic_cs.2025_jul_data`
+UNION ALL SELECT * FROM `cyclistic_cs.2025_aug_data`
+UNION ALL SELECT * FROM `cyclistic_cs.2025_sep_data`
+UNION ALL SELECT * FROM `cyclistic_cs.2025_oct_data`
+UNION ALL SELECT * FROM `cyclistic_cs.2025_nov_data`
+UNION ALL SELECT * FROM `cyclistic_cs.2025_dec_data`;
+  
+Data Cleaning and Transformation 
+Data cleaning was performed to ensure accuracy and create new variables for analysis:
+  
+Creating Calculated Columns: Created ride_length_mins, day_of_week, and month columns to enable time-series and categorical analysis.
+Data Validation: Removed 'dirty' data, specifically trips with negative durations (system errors) or trips exceeding 24 hours (outliers).
+Handling Missing Values: Excluded records with null or blank member_casual values to maintain data integrity.
+
+CREATE TABLE `case-study-2025-483513.cyclistic_cs.2025_full_year_cleaned` AS
+SELECT 
+--Standardize time format
+  FORMAT_TIMESTAMP('%Y-%m-%d %H:%M:%S', started_at) AS started_at,
+  FORMAT_TIMESTAMP('%Y-%m-%d %H:%M:%S', ended_at) AS ended_at,
+--Create ride_length_mins column by getting the timestamp difference
+  TIMESTAMP_DIFF(ended_at, started_at, MINUTE) AS ride_length_mins,
+--Create day_of_week column
+  EXTRACT(DAYOFWEEK FROM started_at) AS day_of_week_num,
+  FORMAT_DATE('%A', started_at) AS day_of_week_name,
+--Create month column
+  EXTRACT(MONTH FROM started_at) AS month_num,
+  FORMAT_DATE('%B', DATE(started_at)) AS month_name
+FROM `case-study-2025-483513.cyclistic_cs.2025_full_year`
+--Filter trip duration < 0 > 1440
+WHERE TIMESTAMP_DIFF(ended_at, started_at, MINUTE) > 0 AND
+  TIMESTAMP_DIFF(ended_at, started_at, MINUTE) < 1440
+--Filter out missing rider types 
+  AND member_casual IS NOT NULL
+  AND member_casual != ' '
+ORDER BY ride_length_mins DESC;
