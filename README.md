@@ -4,11 +4,11 @@
 
 This repository contains my analysis for the Google Data Analytics Professional Certificate Capstone Project. The goal is to provide data-driven recommendations to help the Cyclistic marketing team convert casual riders into annual members.
 
-![Cyclistic Analysis Dashboard](Data_Viz_Cyclistic.png)
-
 **Project Overview**
 
 Cyclistic is a fictional bike-share program in Chicago. The marketing director believes that maximizing the number of annual members is the key to future growth. My task is to analyze how casual riders and annual members use Cyclistic bikes differently.
+
+![Cyclistic Analysis Dashboard](Data_Viz_Cyclistic.png)
 
 **Tools Used**
 
