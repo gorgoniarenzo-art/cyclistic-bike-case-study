@@ -33,11 +33,11 @@ Key Stakeholders: Director of Marketing, Marketing Analytics Team, Cyclistic Exe
 
 Data is stored in CSV files.
 I used the last 12 months of data (Jan 2025 - Dec 2025).
-Data has been verified for integrity (checked for missing values, duplicates, and outliers).
+Data has been verified for integrity by checking for missing values, duplicate ride IDs, and invalid trip durations.
 
 3. Process
 
-Major Cleaning Step: I combined 12 individual monthly datasets into a single year-long table using UNION ALL. I then filtered out "false starts" by removing any trips with a duration of less than or equal to zero and trips greater than 24 hours to ensure the data was not skewed by technical errors or unreturned bikes.
+Major Cleaning Step: I combined 12 individual monthly datasets into a single year-long table using UNION ALL. I also filtered out invalid and anomalous trips by removing rides with non-positive durations and rides longer than 24 hours, which likely represent data errors or unreturned bikes.
 
 Creating New Columns: I used the TIMESTAMP_DIFF function to calculate ride_length_mins. To enable time-based analysis, I utilized EXTRACT and FORMAT_DATE functions to create day_of_week and month columns, allowing me to compare usage patterns across different timeframes.
 
